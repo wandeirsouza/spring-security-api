@@ -32,11 +32,17 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
+			.antMatchers(HttpMethod.GET, "/actuator/*").permitAll()
+			.antMatchers(HttpMethod.GET, "/api-docs").permitAll()
+			.antMatchers(HttpMethod.GET, "/api-docs/*").permitAll()
+			.antMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
+			.antMatchers(HttpMethod.GET, "/swagger-ui.html*").permitAll()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilter(new JWTAutenticateFilter(authenticationManager()))
 			.addFilter(new JWTValidationFilter(authenticationManager()))
+			.cors().and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	

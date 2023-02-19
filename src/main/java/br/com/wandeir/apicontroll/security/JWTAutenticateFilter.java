@@ -46,7 +46,9 @@ public class JWTAutenticateFilter extends UsernamePasswordAuthenticationFilter {
 			FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		UserDetailsData userData = (UserDetailsData) authResult.getPrincipal();
-		String token = JWT.create().withSubject(userData.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + JWTUtils.TOKEN_EXPIRATION))
+		String token = JWT.create().withSubject(userData.getUsername())
+				.withExpiresAt(new Date(System.currentTimeMillis() + JWTUtils.TOKEN_EXPIRATION))
+				.withClaim("Role", "ADMIN")
 				.sign(Algorithm.HMAC512(JWTUtils.TOKEN_PASSWORD));		
 		response.getWriter().write(token);
 		response.getWriter().flush();

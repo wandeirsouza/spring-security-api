@@ -22,7 +22,6 @@ public class FeedbackController {
 		this.feedbackRepository = feedbackRepository;
 	}
 
-
 	@GetMapping(path = "/listarTodos", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FeedbackModel>> listarTodos() {
 		List<FeedbackModel> lista = feedbackRepository.findAll();
