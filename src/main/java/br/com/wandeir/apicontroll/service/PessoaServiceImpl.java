@@ -55,4 +55,9 @@ public class PessoaServiceImpl implements PessoaService {
 		return prestadorRepository.findAll(exemplo, Sort.by(Sort.Direction.ASC, "id"));
 	}
 
+	@Override
+	public List<Pessoa> findUserByStatusAndName(Double lat, Double lng) {
+		return pessoaRepository.findUserByStatusAndName(lat, lng);
+	}
+
 }

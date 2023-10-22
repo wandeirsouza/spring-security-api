@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 
+import br.com.wandeir.apicontroll.enums.TipoCliente;
+import br.com.wandeir.apicontroll.enums.TipoPessoa;
+import br.com.wandeir.apicontroll.enums.converters.TipoClienteConverter;
+import br.com.wandeir.apicontroll.enums.converters.TipoPessoaConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -71,9 +76,13 @@ public class Pessoa {
 	
 	private String outrasRedesSociais;
 	
-	private String sexo;
+	@Convert(converter = TipoPessoaConverter.class)
+	private TipoPessoa sexo;
 	
 	private String whatsappNumber;
 	
 	private String otherPhoneNumber;
+	
+	@Convert(converter = TipoClienteConverter.class)
+	private TipoCliente custumerTipe;
 }

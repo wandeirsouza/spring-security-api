@@ -35,7 +35,7 @@ public class ServicoController {
 	
 	@GetMapping("/tiposervico")
 	public ResponseEntity<Object> recuperaTodosTiposServicos() {
-		try {
+		try {			
 			return ResponseEntity.status(HttpStatus.OK).body(servicoService.findAllTipos());
 		} catch (Exception e) {
 			LOG.error("Erro ao recuperaTodosTiposServicos ", e);

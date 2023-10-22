@@ -16,4 +16,6 @@ public interface PessoaService {
 	public Optional<Pessoa> getPessoaByUuid(String uuid);
 	
 	public List<PrestadorServico> getServicosPorPessoa(Long id);
+	
+	public List<Pessoa> findUserByStatusAndName(Double lat, Double lng);
 }

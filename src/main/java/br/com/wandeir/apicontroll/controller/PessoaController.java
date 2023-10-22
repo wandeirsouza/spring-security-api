@@ -149,6 +149,30 @@ public class PessoaController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message: Ocorreu um erro inesperado" );
 	}
 	
+	@GetMapping("/localiza/{lat}/{lng}/{servico}")
+	public ResponseEntity<Object> getPessoasPorLocalizacao(@PathVariable Double lat, @PathVariable Double lng, @PathVariable Long servico) {
+		try {
+			List<Pessoa> op = pessoaService.findUserByStatusAndName(lat, lng);
+			List<PessoaDTO> listaRetorno = new ArrayList<PessoaDTO>();
+			if(!op.isEmpty()) {
+				for (Pessoa pessoa : op) {
+					if(pessoa.getServicosPrestados()!=null && !pessoa.getServicosPrestados().isEmpty()) {
+						for (PrestadorServico servicoPrestado : pessoa.getServicosPrestados()) {
+							if(servicoPrestado.getServicoPrestado().getId()==servico) {
+								listaRetorno.add(new PessoaDTO().buildPessoaDTO(pessoa));						
+							}
+						}
+					}
+				}
+				return ResponseEntity.status(HttpStatus.OK).body(listaRetorno);
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message: Pessoa não encontrada" );
+		} catch (Exception e) {
+			LOG.error("Erro ao salvar pessoa", e);
+		}
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Message: Ocorreu um erro inesperado" );
+	}
+	
 	@GetMapping("/{id}/servicos")
 	public ResponseEntity<Object> getServiosPrestados(@PathVariable Long id) {
 		try {

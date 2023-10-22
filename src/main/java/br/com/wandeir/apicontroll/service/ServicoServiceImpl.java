@@ -4,9 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import br.com.wandeir.apicontroll.dto.RetornoPaginadoDTO;
 import br.com.wandeir.apicontroll.model.Servico;
 import br.com.wandeir.apicontroll.model.TipoServico;
 import br.com.wandeir.apicontroll.repository.ServicoRepository;
@@ -48,6 +52,22 @@ public class ServicoServiceImpl implements ServicoService {
 	@Override
 	public List<TipoServico> findAllTipos() {
 		return tipoServicoRepository.findAll();
+	}
+	
+	@Override
+	public RetornoPaginadoDTO findAllTiposPaginado(int pagina, int tamanho, Servico exemplo) {
+		Example<Servico> example = Example.of(exemplo);
+		RetornoPaginadoDTO retorno = new RetornoPaginadoDTO();
+		
+		Pageable page = PageRequest.of(pagina, tamanho);
+		Page<Servico> servicos = servicoRepository.findAll(example,page);
+		if(servicos.hasContent()) {
+			retorno.setPagAtual(pagina);
+			retorno.setTotalItens(servicos.getNumberOfElements());
+			retorno.setTotalPaginas(servicos.getTotalPages());
+			retorno.setDados(servicos.getContent());
+		}
+		return retorno;
 	}
 
 }
